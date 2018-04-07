@@ -34,7 +34,7 @@ public class Sorting<K,V> {
             int key = list.get(i).getKey();
             int j = i - 1;
             while(j >= 0 && list.get(j).getKey() > key){
-                list.set(j+1, j);
+                //list.set(j+1, j);
             }
 
         }
