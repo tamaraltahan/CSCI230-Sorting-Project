@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Queue;
 
-public class Sorting<K, V> {
+public class Sorting {
 
     TypeComparator comp = new TypeComparator();
 
@@ -79,26 +79,11 @@ public class Sorting<K, V> {
 
     }
 
-    private void quickSort(Queue<Entry<Integer,String>> S){
-
-    }
-
-    public void quickSort(ArrayList<Entry<Integer, String>> list) {
-        Queue<Entry<Integer, String>> S = new linkedQueue<>();
-
-        for (int i = 0; i < list.size(); i++) {
-            S.add(list.get(i));
-        }
-
-        method = "Insertion Sort";
-        valuesSorted = list.size();
-        type = type1;
-
+    private void sort(Queue<Entry<Integer, String>> S) {
         if (S.size() < 2) {
             return;
         }
-
-        Integer pivot = list.get(0).getKey() + list.get(list.size() - 1).getKey() + list.get(list.size() / 2).getKey();
+        int pivot = list.get(0).getKey() + list.get(list.size() - 1).getKey() + list.get(list.size() / 2).getKey();
         Queue<Entry<Integer, String>> L = new LinkedQueue<>();
         Queue<Entry<Integer, String>> E = new LinkedQueue<>();
         Queue<Entry<Integer, String>> G = new LinkedQueue<>();
@@ -113,9 +98,32 @@ public class Sorting<K, V> {
             else
                 E.add(element);
         }
-        quickSort(L);
-        quickSort(G);
+        sort(L);
+        sort(G);
 
+        while (!L.isEmpty()) {
+            S.add(L.poll());
+        }
+        while (!E.isEmpty()) {
+            S.add(E.poll());
+        }
+        while (!G.isEmpty()) {
+            S.add(G.poll());
+        }
+    }
+
+    public void quickSort(ArrayList<Entry<Integer, String>> list) {
+        Queue<Entry<Integer, String>> S = new linkedQueue<>();
+        for (int i = 0; i < list.size(); i++) {
+            S.add(list.get(i));
+        }
+        method = "Quick Sort";
+        valuesSorted = list.size();
+        type = type1;
+        double t1 = System.currentTimeMillis();
+        sort(S);
+        double t2 = System.currentTimeMillis();
+        time = t2 - t1;
     }
 
 
