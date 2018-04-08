@@ -76,13 +76,33 @@ public class Sorting {
         time = t2 - t1;
 
     }
+    private int medianOfThree(ArrayList<Entry<Integer,String>> list, int left, int right){
+        int mid = (left + right) / 2;
+        if(list.get(left).getKey() > list.get(mid).getKey()){
+            swap(list, left, mid);
+        }
+        if(list.get(left).getKey() > list.get(right).getKey()){
+            swap(list,left, right);
+        }
+        if(list.get(mid).getKey() > list.get(right).getKey())
+            swap(list,mid,right);
 
-    private void sort(ArrayList<Entry<Integer, String>> list) {
+        swap(list,mid,right-1);
+        return list.get(right-1).getKey();
+    }
+
+    private void swap(ArrayList<Entry<Integer,String>> list, int left, int right){
+        Entry temp = list.get(left);
+        list.set(left,list.get(right));
+        list.set(right,temp);
+    }
+
+    private void sort(ArrayList<Entry<Integer, String>> list, int comps, int moves) {
         ArrayList<Entry<Integer, String>> tempList = new ArrayList<>();
         if (list.size() < 2) {
             return;
         }
-        int pivot = list.get(0).getKey() + list.get(list.size() - 1).getKey() + list.get(list.size() / 2).getKey();
+        int pivot = medianOfThree(list,list.get(0).getKey(),list.get(list.size()-1).getKey());
         ArrayList<Entry<Integer, String>> L = new ArrayList<>();
         ArrayList<Entry<Integer, String>> E = new ArrayList<>();
         ArrayList<Entry<Integer, String>> G = new ArrayList<>();
@@ -99,8 +119,8 @@ public class Sorting {
                 E.add(element);
             index++;
         }
-        sort(L);
-        sort(G);
+        sort(L,compares,dataMoves);
+        sort(G,compares,dataMoves);
 
         for (Entry<Integer, String> aL : L) {
             tempList.add(aL);
@@ -118,7 +138,7 @@ public class Sorting {
         valuesSorted = list.size();
         type = type1;
         double t1 = System.currentTimeMillis();
-        sort(list);
+        sort(list,compares,dataMoves);
         double t2 = System.currentTimeMillis();
         time = t2 - t1;
     }
