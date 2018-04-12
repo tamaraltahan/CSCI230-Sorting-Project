@@ -21,23 +21,29 @@ public class Writer<K, V> {
         BufferedWriter bw = null;
         FileWriter fw = null;
         try {
-            String content = "";
-            builder.append("Sorting method: " + method + "\n Input File Name: " + fileType + "\nNumber of Values Sorted:" + valuesSorted + "\nKey Data Type: " + dataType + "\nKey compares: " + compares
-                    + "\nData Moves: " + moves + "\nTime (ms): " + time + "\nFirst/last Five Pairs:");
+            builder.append("Sorting method: " + method);
+            builder.append("\nInput File Name: " + fileType);
+            builder.append("\nNumber of Values Sorted: " + valuesSorted);
+            builder.append("\nKey Data Type: " + dataType);
+            builder.append("\nKey compares: " + compares);
+            builder.append("\nData Moves: " + moves);
+            builder.append("\nTime (ms): " + time);
+            builder.append("\nFirst/last Five Pairs: ");
             builder.append("\nFirst 5: ");
+            builder.append('\n');
             for (int i = 0; i < 5; i++) {
-                builder.append(list.get(i).getKey().toString() + " " + list.get(i).getValue().toString());
+                builder.append(" k" + list.get(i).getKey().toString() + " v " + list.get(i).getValue().toString() + " ");
             }
-            builder.append("\nLast 5: ");
+            builder.append("\nLast 5:\n");
             for (int i = list.size() - 6; i < list.size(); i++) {
-                builder.append(list.get(i).getKey().toString() + " " + list.get(i).getValue().toString());
+                builder.append(" k " + list.get(i).getKey().toString() + " v " + list.get(i).getValue().toString() + " ");
             }
 
             fw = new FileWriter(FILENAME);
             bw = new BufferedWriter(fw);
 
-            bw.write(content);
-
+            System.out.println(builder.toString());
+            bw.write(builder.toString());
             System.out.println("Done");
 
         } catch (IOException e) {
@@ -59,7 +65,6 @@ public class Writer<K, V> {
                 ex.printStackTrace();
 
             }
-
         }
     }
 }

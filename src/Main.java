@@ -11,7 +11,7 @@ public class Main {
         listTypeA = reader.getListA();
         listTypeB = reader.getListB();
         Sorting sorter = new Sorting();
-        //sorter.insertionSort(listTypeA);
+        sorter.insertionSort(listTypeA);
 
     }
 }

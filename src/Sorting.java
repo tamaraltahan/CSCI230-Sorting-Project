@@ -9,6 +9,7 @@ public class Sorting {
     private int compares = 0;
     private int dataMoves = 0;
     private String method;
+    private String file;
     private int valuesSorted = 0;
     private double time;
 
@@ -36,6 +37,7 @@ public class Sorting {
         compares = 0;
         method = "Selection Sort";
         valuesSorted = list.size();
+        file = list.size() < 10000 ? "Small1k.txt" : "Large100k.txt";
         type = type1;
 
         double t1 = System.currentTimeMillis();
@@ -54,6 +56,9 @@ public class Sorting {
         }
         double t2 = System.currentTimeMillis();
         time = t2 - t1;
+
+        writer.output(method,file,valuesSorted,type,compares,dataMoves,time,list);
+
     }
 
     public void insertionSort(ArrayList<Entry<Integer, String>> list) {
@@ -62,6 +67,7 @@ public class Sorting {
         compares = 0;
         method = "Insertion Sort";
         valuesSorted = list.size();
+        file = list.size() < 10000 ? "Small1k.txt" : "Large100k.txt";
         type = type1;
 
         double t1 = System.currentTimeMillis();
@@ -69,7 +75,7 @@ public class Sorting {
             int key = list.get(i).getKey();
             int j = i - 1;
             compares++;
-            while (j > 0 && comp.compare(list.get(j).getKey(), key) == 1) {
+            while (j > 0 && comp.compare(list.get(j).getKey(), key) > 0) {
                 compares++;
                 list.set(j + 1, list.get(j));
                 dataMoves += 3;
@@ -80,6 +86,7 @@ public class Sorting {
         }
         double t2 = System.currentTimeMillis();
         time = t2 - t1;
+        writer.output(method,file,valuesSorted,type,compares,dataMoves,time,list);
     }
 
 
@@ -169,6 +176,7 @@ public class Sorting {
         compares = 0;
         method = "Quick Sort";
         valuesSorted = list.size();
+        file = list.size() < 10000 ? "Small1k.txt" : "Large100k.txt";
         type = type1;
         double t1 = System.currentTimeMillis();
         quickSort(list, compares, dataMoves);
@@ -218,8 +226,9 @@ public class Sorting {
         valuesSorted = 0;
         dataMoves = 0;
         compares = 0;
-        method = "Insertion Sort";
+        method = "Merge Sort";
         valuesSorted = S.size();
+        file = S.size() < 10000 ? "Small1k.txt" : "Large100k.txt";
         type = type1;
         double t1 = System.currentTimeMillis();
         mergeSort(S, compares, dataMoves);
