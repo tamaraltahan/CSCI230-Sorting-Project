@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 
-
 public class Sorting {
 
     private TypeComparator comp = new TypeComparator();
@@ -29,7 +28,8 @@ public class Sorting {
     4. Number of Key Compares and Data Moves (each SWAP of two values is counted as 3 data moves)
     5. The time in milliseconds
     6. The first 5 pairs and last 5 pairs
-     */
+    */
+
 
     public void selectionSort(ArrayList<Entry<Integer, String>> list) {
         valuesSorted = 0;
@@ -37,29 +37,29 @@ public class Sorting {
         compares = 0;
         method = "Selection Sort";
         valuesSorted = list.size();
-        file = list.size() < 10000 ? "Small1k.txt" : "Large100k.txt";
+        file = list.size() == 1000 ? "Small1k.txt" : "Large100k.txt";
         type = type1;
-
         double t1 = System.currentTimeMillis();
+
         for (int i = 0; i < list.size(); i++) {
             Entry entry = list.get(i);
             int j = i - 1;
-            compares++;
-            while (j >= 0 && comp.compare(list.get(j).getKey(), entry.getKey()) == 1) {
+            while (j >= 0 && comp.compare(list.get(j).getKey(), entry.getKey()) > 0) {
                 compares++;
                 list.set(j + 1, list.get(j));
                 dataMoves += 3;
                 j = j - 1;
             }
             list.set(j + 1, entry);
+            compares++;
             dataMoves += 3;
         }
+
         double t2 = System.currentTimeMillis();
         time = t2 - t1;
-
-        writer.output(method,file,valuesSorted,type,compares,dataMoves,time,list);
-
+        writer.output(method, file, valuesSorted, type, compares, dataMoves, time, list);
     }
+
 
     public void insertionSort(ArrayList<Entry<Integer, String>> list) {
         valuesSorted = 0;
@@ -67,107 +67,93 @@ public class Sorting {
         compares = 0;
         method = "Insertion Sort";
         valuesSorted = list.size();
-        file = list.size() < 10000 ? "Small1k.txt" : "Large100k.txt";
+        file = list.size() == 1000 ? "Small1k.txt" : "Large100k.txt";
         type = type1;
-
         double t1 = System.currentTimeMillis();
+
         for (int i = 1; i < list.size(); i++) {
-            int key = list.get(i).getKey();
-            int j = i - 1;
+            Entry<Integer,String> temp = list.get(i);
+            int j = i;
             compares++;
-            while (j > 0 && comp.compare(list.get(j).getKey(), key) > 0) {
+            while ((j > 0) && (comp.compare(list.get(j-1).getKey(), temp.getKey()) > 0)) {
                 compares++;
-                list.set(j + 1, list.get(j));
+                list.set(j, list.get(j-1));
                 dataMoves += 3;
-                j = j - 1;
+                j--;
             }
-            list.set(j + 1, list.get(i));
+            list.set(j, temp);
             dataMoves += 3;
         }
+
         double t2 = System.currentTimeMillis();
         time = t2 - t1;
+        //printList(list);
         writer.output(method,file,valuesSorted,type,compares,dataMoves,time,list);
     }
 
+    private Entry<Integer, String> medianOfThree(ArrayList<Entry<Integer, String>> list, int left, int right) {
 
-    private int medianOfThree(ArrayList<Entry<Integer, String>> list, int left, int right, int comps, int moves) {
-        int mid = (left + right) / 2;
-        if (list.get(left).getKey() > list.get(mid).getKey()) {
-            swap(list, left, mid);
-            comps++;
-            moves += 3;
+        int center = (left + right) / 2;
+
+        if(list.get(left).getKey() > list.get(center).getKey()){
+            swap(list,left,right);
         }
-        if (list.get(left).getKey() > list.get(right).getKey()) {
-            swap(list, left, right);
-            comps++;
-            moves += 3;
+        if(list.get(left).getKey() > list.get(right).getKey()){
+            swap(list,left,right);
         }
-        if (list.get(mid).getKey() > list.get(right).getKey()) {
-            swap(list, mid, right);
-            comps++;
-            moves += 3;
+        if(list.get(center).getKey() > list.get(right).getKey()){
+            swap(list,center,right);
         }
 
-        compares += comps;
-        dataMoves += moves;
-
-        swap(list, mid, right - 1);
-        return list.get(right - 1).getKey();
+        swap(list,center,right-1);
+        return list.get(right-1);
     }
 
-    private void swap(ArrayList<Entry<Integer, String>> list, int left, int right) {
-        Entry temp = list.get(left);
-        list.set(left, list.get(right));
-        list.set(right, temp);
+    private void swap(ArrayList<Entry<Integer, String>> list, int a, int b) {
+        dataMoves+=3;
+        Entry<Integer,String> temp = list.get(a);
+        list.set(a, list.get(b));
+        list.set(b, temp);
     }
 
 
-    private void quickSort(ArrayList<Entry<Integer, String>> list, int comps, int moves) {
-        ArrayList<Entry<Integer, String>> tempList = new ArrayList<>();
-        if (list.size() < 2) {
-            compares += comps;
-            dataMoves += moves;
+    private void quickSort(ArrayList<Entry<Integer, String>> list, int a, int b, int comps, int moves) {
+        if(a >= b){
+            compares = comps;
+            dataMoves = moves;
             return;
         }
-        int pivot = medianOfThree(list, list.get(0).getKey(), list.get(list.size() - 1).getKey(), comps, moves);
-        ArrayList<Entry<Integer, String>> L = new ArrayList<>();
-        ArrayList<Entry<Integer, String>> E = new ArrayList<>();
-        ArrayList<Entry<Integer, String>> G = new ArrayList<>();
-
-        int index = 0;
-        while (list.get(0) != null) {
-            Entry element = list.get(index);
-            int c = comp.compare(element.getKey(), pivot);
-            if (c < 0) {
-                L.add(element);
+        Entry<Integer,String> pivot = medianOfThree(list,a,b);
+        int left = a;
+        int right = b - 1;
+        Entry temp;
+        comps++;
+        while(left <= right){
+            comps++;
+            while(left <= right && comp.compare(list.get(left).getKey(),pivot.getKey()) < 0){
+                left++;
                 comps++;
-                moves++;
-            } else if (c > 0) {
-                G.add(element);
-                comps++;
-                moves++;
-            } else {
-                E.add(element);
-                comps++;
-                moves++;
             }
-            index++;
+            while(left <= right && comp.compare(list.get(right).getKey(),pivot.getKey()) > 0){
+                right--;
+                comps++;
+            }
+            if(left <= right){
+                temp = list.get(left);
+                list.set(left,list.get(right));
+                list.set(right,temp);
+                moves+=3;
+                left++;
+                right--;
+            }
         }
-        quickSort(L, comps, moves);
-        quickSort(G, comps, moves);
+        temp = list.get(left);
+        list.set(left,list.get(b));
+        list.set(b,temp);
+        moves += 3;
 
-        for (Entry<Integer, String> aL : L) {
-            tempList.add(aL);
-            moves++;
-        }
-        for (Entry<Integer, String> aE : E) {
-            tempList.add(aE);
-            moves++;
-        }
-        for (Entry<Integer, String> aG : G) {
-            tempList.add(aG);
-            moves++;
-        }
+        quickSort(list,a,left-1,comps,moves);
+        quickSort(list,left+1,b,comps,moves);
     }
 
     public void quickSort(ArrayList<Entry<Integer, String>> list) {
@@ -176,12 +162,13 @@ public class Sorting {
         compares = 0;
         method = "Quick Sort";
         valuesSorted = list.size();
-        file = list.size() < 10000 ? "Small1k.txt" : "Large100k.txt";
+        file = list.size() == 1000 ? "Small1k.txt" : "Large100k.txt ";
         type = type1;
         double t1 = System.currentTimeMillis();
-        quickSort(list, compares, dataMoves);
+        quickSort(list, 0, list.size()-1, compares, dataMoves);
         double t2 = System.currentTimeMillis();
         time = t2 - t1;
+        writer.output(method,file,valuesSorted,type,compares,dataMoves,time,list);
     }
 
 
@@ -216,8 +203,8 @@ public class Sorting {
         ArrayList<Entry<Integer, String>> S1 = new ArrayList<>(S.subList(0, mid)); // copy of first half
         ArrayList<Entry<Integer, String>> S2 = new ArrayList<>(S.subList(mid, n)); // copy of second half
         // conquer (with recursion)
-        mergeSort(S1); // sort copy of first half
-        mergeSort(S2); // sort copy of second half
+        mergeSort(S1,comps,moves); // sort copy of first half
+        mergeSort(S2,comps,moves); // sort copy of second half
         // merge results
         merge(S1, S2, S, comps, moves); // merge sorted halves back into original
     }
@@ -234,5 +221,6 @@ public class Sorting {
         mergeSort(S, compares, dataMoves);
         double t2 = System.currentTimeMillis();
         time = t2 - t1;
+        writer.output(method,file,valuesSorted,type,compares,dataMoves,time,S);
     }
 }
