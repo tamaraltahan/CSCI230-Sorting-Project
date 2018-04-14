@@ -7,8 +7,10 @@ import java.util.ArrayList;
 public class Reader<K,V> {
 
     //-------------------------------file names------------------------------------
-    private static final String smallFile = "C:\\Users\\Tamar\\Downloads\\small1k.txt";
-    private static final String largeFile = "C:\\Users\\Tamar\\Downloads\\large100k.txt";
+    //private static final String smallFile = "C:\\Users\\Tamar\\Downloads\\small1k.txt";
+    //private static final String largeFile = "C:\\Users\\Tamar\\Downloads\\large100k.txt";
+    private static final String smallFile = "C:\\Users\\tamar\\Desktop\\stuff\\CS stuff\\small1k.txt";
+    private static final String largeFile = "C:\\Users\\tamar\\Desktop\\stuff\\CS stuff\\large100k.txt";
     //-----------------------------------------------------------------------------
 
     //---------------------containers------------------------
@@ -37,7 +39,7 @@ public class Reader<K,V> {
     }
     public ArrayList<Entry<K, V>> getListB() {
         ArrayList<Entry<K, V>> B = new ArrayList<>(listB);
-        listA.clear();
+        listB.clear();
         return B;
     }
     //----------------------------------------------------------------

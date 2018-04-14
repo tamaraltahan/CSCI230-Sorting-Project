@@ -13,7 +13,8 @@ import java.util.ArrayList;
 
 public class Writer<K, V> {
 
-    private static final String FILENAME = "C:\\Users\\Tamar\\Desktop\\p2Results.txt";
+    //private static final String FILENAME = "C:\\Users\\Tamar\\Desktop\\p2Results.txt";
+    private static final String FILENAME = "C:\\Users\\tamar\\Desktop\\stuff\\p2Results.txt";
 
     public void output(String method, String fileType, int valuesSorted, String dataType, int compares, int moves, double time, ArrayList<Entry<K, V>> list) {
 
