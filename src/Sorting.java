@@ -110,7 +110,7 @@ public class Sorting<K,V> {
         int center = (left + right) / 2;
 
         if(comp.compare(list.get(left).getKey(),list.get(center).getKey()) > 0){
-            swap(list,left,right);
+            swap(list,left,center);
         }
         if(comp.compare(list.get(left).getKey(),list.get(right).getKey()) > 0){
             swap(list,left,right);
@@ -118,8 +118,8 @@ public class Sorting<K,V> {
         if(comp.compare(list.get(center).getKey(),list.get(right).getKey()) > 0){
             swap(list,center,right);
         }
-        swap(list,center,right-1);
-        return list.get(right-1);
+        swap(list,center,right);
+        return list.get(right);
     }
 
     private void swap(ArrayList<Entry<K, V>> list, int a, int b) {
@@ -136,9 +136,11 @@ public class Sorting<K,V> {
             dataMoves = moves;
             return;
         }
+
         Entry<K,V> pivot = medianOfThree(list,leftBound,rightBound);
+
         int left = leftBound;
-        int right = rightBound;
+        int right = rightBound - 1;
         Entry temp;
         while(left <= right){
             comps++;
