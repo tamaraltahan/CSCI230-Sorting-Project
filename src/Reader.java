@@ -4,59 +4,62 @@ import java.io.IOException;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-public class Reader {
+public class Reader<K,V> {
 
-    private ArrayList<Entry<Integer, String>> listA = new ArrayList<>();
-    private ArrayList<Entry<String, Integer>> listB = new ArrayList<>();
-
-    //storage for elements in the file
-    private ArrayList<Integer> smallIntermediateList = new ArrayList<>();
-    private ArrayList<Integer> largeIntermediateList = new ArrayList<>();
-
-    //file names
+    //-------------------------------file names------------------------------------
     private static final String smallFile = "C:\\Users\\Tamar\\Downloads\\small1k.txt";
     private static final String largeFile = "C:\\Users\\Tamar\\Downloads\\large100k.txt";
+    //-----------------------------------------------------------------------------
+
+    //---------------------containers------------------------
+    private ArrayList<Entry<K, V>> listA = new ArrayList<>();
+    private ArrayList<Entry<K, V>> listB = new ArrayList<>();
+    //-------------------------------------------------------
 
     //read namesake's file, and populate arraylists with their values
-    public void readLargeFile() {
-        readFile(largeFile);
-        setLists(largeIntermediateList);
-    }
-
     public void readSmallFile() {
-        readFile(smallFile);
-        setLists(smallIntermediateList);
+        ArrayList<Integer> tempSmall = new ArrayList<>();
+        readFile(smallFile,tempSmall);
+        setLists(tempSmall);
     }
-
-    //getters
-    public ArrayList<Entry<Integer, String>> getListA() {
-        return listA;
+    public void readLargeFile() {
+        ArrayList<Integer> tempLarge = new ArrayList<>();
+        readFile(largeFile, tempLarge);
+        setLists(tempLarge);
     }
+    //----------------------------------------------------------------
 
-    public ArrayList<Entry<String, Integer>> getListB() {
-        return listB;
+    //--------------------------getters-------------------------------
+    public ArrayList<Entry<K, V>> getListA() {
+        ArrayList<Entry<K, V>> A = new ArrayList<>(listA);
+        listA.clear();
+        return A;
     }
+    public ArrayList<Entry<K, V>> getListB() {
+        ArrayList<Entry<K, V>> B = new ArrayList<>(listB);
+        listA.clear();
+        return B;
+    }
+    //----------------------------------------------------------------
 
-    private void readFile(String FILENAME) {
+
+    private void readFile(String FILENAME, ArrayList<Integer> list) {
         BufferedReader reader = null;
 
         try {
             String text;
             reader = new BufferedReader(new FileReader(FILENAME));
             while ((text = reader.readLine()) != null) {
-                String[] numbers = text.split("\\s+"); //split by space
-
-                if (text.charAt(0) == 0) { //string splitting works differently when first character is null. Selecting the index is the only difference
-                    for (int i = 0; i < numbers.length; i++) {
-                        largeIntermediateList.add(Integer.parseInt(numbers[i]));
-                    }
-                } else {
+                if(FILENAME.equals(largeFile)){
+                    list.add(Integer.parseInt(text));
+                }
+                else {
+                    String[] numbers = text.split("\\s+"); //split by space
                     for (int i = 1; i < numbers.length; i++) {
-                        smallIntermediateList.add(Integer.parseInt(numbers[i]));
+                        list.add(Integer.parseInt(numbers[i]));
                     }
                 }
             }
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
