@@ -29,15 +29,15 @@ public class Writer<K, V> {
             builder.append("\nData Moves: " + moves);
             builder.append("\nTime (ms): " + time);
             builder.append("\nFirst/last Five Pairs: ");
-            builder.append("\nFirst 5: ");
-            builder.append('\n');
+            builder.append("\nFirst 5:\n");
             for (int i = 0; i < 5; i++) {
-                builder.append(" k" + list.get(i).getKey().toString() + " v " + list.get(i).getValue().toString() + " ");
+                builder.append(list.get(i).getKey().toString() + "," + list.get(i).getValue().toString() + " ");
             }
             builder.append("\nLast 5:\n");
-            for (int i = list.size() - 6; i < list.size(); i++) {
-                builder.append(" k " + list.get(i).getKey().toString() + " v " + list.get(i).getValue().toString() + " ");
+            for (int i = list.size() - 5; i < list.size(); i++) {
+                builder.append(list.get(i).getKey().toString() + "," + list.get(i).getValue().toString() + " ");
             }
+            builder.append('\n');
 
             fw = new FileWriter(FILENAME);
             bw = new BufferedWriter(fw);

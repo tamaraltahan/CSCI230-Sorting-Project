@@ -12,6 +12,21 @@ public class Main {
         listTypeB = reader.getListB();
         Sorting sorter = new Sorting();
         sorter.insertionSort(listTypeA);
+        sorter.selectionSort(listTypeA);
+        sorter.quickSort(listTypeA);
+        sorter.mergeSort(listTypeA);
+        sorter.insertionSort(listTypeB);
+        sorter.selectionSort(listTypeB);
+        sorter.quickSort(listTypeB);
+        sorter.mergeSort(listTypeB);
+
+        reader.readLargeFile();
+        listTypeA = reader.getListA();
+        listTypeB = reader.getListB();
+        sorter.quickSort(listTypeA);
+        sorter.mergeSort(listTypeA);
+        sorter.quickSort(listTypeB);
+        sorter.mergeSort(listTypeB);
 
     }
 }
