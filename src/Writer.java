@@ -23,48 +23,39 @@ public class Writer<K, V> {
         FileWriter fw = null;
         try {
             builder.append("Sorting method: " + method);
-            builder.append("\nInput File Name: " + fileType);
-            builder.append("\nNumber of Values Sorted: " + valuesSorted);
-            builder.append("\nKey Data Type: " + dataType);
-            builder.append("\nKey compares: " + compares);
-            builder.append("\nData Moves: " + moves);
-            builder.append("\nTime (ms): " + time);
-            builder.append("\nFirst/last Five Pairs: ");
-            builder.append("\nFirst 5:\n");
+            builder.append("\r\nInput File Name: " + fileType);
+            builder.append("\r\nNumber of Values Sorted: " + valuesSorted);
+            builder.append("\r\nKey Data Type: " + dataType);
+            builder.append("\r\nKey compares: " + compares);
+            builder.append("\r\nData Moves: " + moves);
+            builder.append("\r\nTime (ms): " + time);
+            builder.append("\r\nFirst/last Five Pairs: ");
+            builder.append("\r\nFirst 5:\r\n");
             for (int i = 0; i < 5; i++) {
                 builder.append(list.get(i).getKey().toString() + "," + list.get(i).getValue().toString() + " ");
             }
-            builder.append("\nLast 5:\n");
+            builder.append("\r\nLast 5:\r\n");
             for (int i = list.size() - 5; i < list.size(); i++) {
                 builder.append(list.get(i).getKey().toString() + "," + list.get(i).getValue().toString() + " ");
             }
-            builder.append('\n');
-
-            fw = new FileWriter(FILENAME);
+            builder.append("\r\n\r\n");
+            fw = new FileWriter(FILENAME,true);
             bw = new BufferedWriter(fw);
 
             System.out.println(builder.toString());
             bw.write(builder.toString());
-            System.out.println("Done");
-
         } catch (IOException e) {
 
             e.printStackTrace();
 
         } finally {
-
             try {
-
                 if (bw != null)
                     bw.close();
-
                 if (fw != null)
                     fw.close();
-
             } catch (IOException ex) {
-
                 ex.printStackTrace();
-
             }
         }
     }

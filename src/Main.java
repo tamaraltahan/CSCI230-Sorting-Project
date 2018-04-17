@@ -8,7 +8,6 @@ public class Main {
     public static void main(String[] args) {
         Reader reader = new Reader();
         Sorting sorter = new Sorting();
-
         reader.readSmallFile();
         listTypeA = reader.getListA();
         listTypeB = reader.getListB();
